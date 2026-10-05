@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Darkie Zone – People Information Lookup | OSINT Portal</title>
+  <meta name="description" content="Fast, accurate OSINT lookup portal. Search mobile number, Aadhaar UID, and email intelligence instantly with real-time verified data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Matrix rain canvas -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- APP WRAPPER -->
+<div class="app-layout">
+
+  <!-- TOP HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <!-- Mobile hamburger toggle -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Side Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <div class="brand">
+          <span class="brand-icon">👤</span>
+          <div>
+            <div class="brand-name">DARKIE ZONE</div>
+            <div class="brand-sub">CYBERSECURITY &amp; TECH TOOLS</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav header-nav">
+        <a href="#" class="nav-link active">Home</a>
+        <a href="#cardNumber" class="nav-link" data-scroll="cardNumber">Number</a>
+        <a href="#cardAadhar" class="nav-link" data-scroll="cardAadhar">Aadhaar</a>
+        <a href="#cardEmail" class="nav-link" data-scroll="cardEmail">Email</a>
+        <a href="#upcomingSection" class="nav-link nav-link--upcoming" data-scroll="upcoming">🚀 Upcoming</a>
+      </nav>
+
+      <div class="header-right">
+        <!-- Creator Credit Badge -->
+        <div class="creator-badge">
+          <span class="creator-glow-dot"></span>
+          <span class="creator-label">CREATED BY —</span>
+          <span class="creator-name">(KRISHNA DAS)</span>
+        </div>
+
+        <div class="badge-secure">
+          <span class="badge-icon">🛡️</span>
+          <div class="badge-text">
+            <div class="badge-top">SAFE &amp; SECURE</div>
+            <div class="badge-bot">Your Privacy Matters</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY CONTENT AREA (SIDEBAR + MAIN) -->
+  <div class="body-container">
+    
+    <!-- SIDEBAR (Side Navigation for Number, Aadhaar, Email, Upcoming Tools) -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title-group">
+          <span class="sidebar-badge-dot"></span>
+          <span class="sidebar-title">LOOKUP SERVICES</span>
+        </div>
+        <button class="sidebar-close-btn" id="sidebarClose" aria-label="Close sidebar">✕</button>
+      </div>
+
+      <div class="sidebar-tools">
+        <!-- All Tools Tab -->
+        <button class="side-tab active" data-tool="all" id="sideTabAll">
+          <div class="side-tab-highlight"></div>
+          <span class="side-tab-icon">⚡</span>
+          <div class="side-tab-info">
+            <span class="side-tab-name">All Services</span>
+            <span class="side-tab-hint">View all lookups</span>
+          </div>
+        </button>
+
+        <!-- Number Lookup Button -->
+        <button class="side-tab side-tab--green" data-tool="number" id="sideTabNumber">
+          <div class="side-tab-highlight"></div>
+          <span class="side-tab-icon">📞</span>
+          <div class="side-tab-info">
+            <span class="side-tab-name">Number Lookup</span>
+            <span class="side-tab-hint">Operator &amp; Circle info</span>
+          </div>
+          <span class="side-tab-tag tag-green">ACTIVE</span>
+        </button>
+
+        <!-- Aadhaar Lookup Button -->
+        <button class="side-tab side-tab--red" data-tool="aadhar" id="sideTabAadhar">
+          <div class="side-tab-highlight"></div>
+          <span class="side-tab-icon">🪪</span>
+          <div class="side-tab-info">
+            <span class="side-tab-name">Aadhaar Lookup</span>
+            <span class="side-tab-hint">12-Digit UID search</span>
+          </div>
+          <span class="side-tab-tag tag-red">POPULAR</span>
+        </button>
+
+        <!-- Email Lookup Button -->
+        <button class="side-tab side-tab--blue" data-tool="email" id="sideTabEmail">
+          <div class="side-tab-highlight"></div>
+          <span class="side-tab-icon">✉️</span>
+          <div class="side-tab-info">
+            <span class="side-tab-name">Email Lookup</span>
+            <span class="side-tab-hint">Breach &amp; Social lookup</span>
+          </div>
+          <span class="side-tab-tag tag-blue">OSINT</span>
+        </button>
+
+        <!-- Upcoming Tools Button -->
+        <button class="side-tab side-tab--purple" data-tool="upcoming" id="sideTabUpcoming">
+          <div class="side-tab-highlight"></div>
+          <span class="side-tab-icon">🚀</span>
+          <div class="side-tab-info">
+            <span class="side-tab-name">Upcoming Tools</span>
+            <span class="side-tab-hint">24 Security &amp; OSINT Labs</span>
+          </div>
+          <span class="side-tab-tag tag-purple">24+ TOOLS</span>
+        </button>
+      </div>
+
+      <!-- SIDEBAR UPCOMING TOOLS LIST (PRINTED DIRECTLY IN SIDEBAR) -->
+      <div class="sidebar-upcoming-box" id="sidebarUpcomingBox">
+        <div class="sidebar-upcoming-head">
+          <span class="pulse-dot-purple"></span>
+          <span class="sidebar-upcoming-title">UPCOMING MODULES (24)</span>
+        </div>
+        <div class="sidebar-upcoming-list">
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🎯</span>
+            <div class="u-text"><strong>Penetration Testing</strong><small>Red Teaming • Exploits</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🛡️</span>
+            <div class="u-text"><strong>Vulnerability Assessment</strong><small>CVE Scans • Audits</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🌐</span>
+            <div class="u-text"><strong>Network Security</strong><small>Firewalls • IDS/IPS</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🔐</span>
+            <div class="u-text"><strong>Cryptography</strong><small>Ciphers • Hash Algorithms</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🕷️</span>
+            <div class="u-text"><strong>Burp Suite</strong><small>Proxy • Web Audits</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🔑</span>
+            <div class="u-text"><strong>OTP Bypass</strong><small>Logic Flaws • Rate Limits</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">💻</span>
+            <div class="u-text"><strong>Ethical Hacking</strong><small>White Hat • Security Labs</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">☣️</span>
+            <div class="u-text"><strong>Malware Analysis</strong><small>Reverse Eng • Sandboxing</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🚨</span>
+            <div class="u-text"><strong>Incident Response</strong><small>SOC • Threat Hunting</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🔏</span>
+            <div class="u-text"><strong>Encryption</strong><small>AES-256 • RSA Keys</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">💉</span>
+            <div class="u-text"><strong>SQL Injection</strong><small>Union • Blind • Error-Based</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">⚔️</span>
+            <div class="u-text"><strong>XSS Protection</strong><small>Reflected • Stored • DOM</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🎣</span>
+            <div class="u-text"><strong>Social Engineering</strong><small>Phishing Sim • Human Vector</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">👁️</span>
+            <div class="u-text"><strong>Biometric Security</strong><small>Fingerprint • Face ID</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">☁️</span>
+            <div class="u-text"><strong>Cloud Security</strong><small>AWS • Azure • GCP Audits</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📶</span>
+            <div class="u-text"><strong>WiFi Hacking</strong><small>WPA2/3 Handshakes • Aircrack</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📱</span>
+            <div class="u-text"><strong>Mobile Security</strong><small>Android &amp; iOS Reversing</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📜</span>
+            <div class="u-text"><strong>Secure Coding</strong><small>OWASP Top 10 • SAST/DAST</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📞</span>
+            <div class="u-text"><strong>Number to Details</strong><small>Telecom OSINT • Lookup</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🗺️</span>
+            <div class="u-text"><strong>IP Lookup</strong><small>Geolocation • ASN • ISP</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📹</span>
+            <div class="u-text"><strong>Camera Hacking</strong><small>RTSP Streams • Shodan Recon</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">📍</span>
+            <div class="u-text"><strong>Live Location</strong><small>GPS Intel • Tracing Labs</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🪪</span>
+            <div class="u-text"><strong>Aadhar No. to Details</strong><small>Identity OSINT • Verification</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+          <div class="sidebar-upcoming-item" data-tool="upcoming">
+            <span class="u-icon">🚗</span>
+            <div class="u-text"><strong>Vehicle Details</strong><small>RC Lookup • RTO OSINT</small></div>
+            <span class="u-badge">SOON</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Switcher Bar on Desktop Sidebar -->
+      <div class="sidebar-status-box">
+        <div class="status-row">
+          <span class="status-indicator"></span>
+          <span class="status-label">Network Status:</span>
+          <span class="status-val glow">CONNECTED</span>
+        </div>
+        <div class="status-row">
+          <span class="status-icon-mini">⚡</span>
+          <span class="status-label">Latency:</span>
+          <span class="status-val">18ms</span>
+        </div>
+        <div class="status-row">
+          <span class="status-icon-mini">🔒</span>
+          <span class="status-label">Encryption:</span>
+          <span class="status-val">AES-256</span>
+        </div>
+      </div>
+
+      <div class="sidebar-help">
+        <span class="help-icon">💡</span>
+        <span>Click any tool to focus directly or switch view.</span>
+      </div>
+    </aside>
+
+    <!-- BACKDROP FOR MOBILE SIDEBAR -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- MAIN SCROLLABLE CONTENT -->
+    <main class="main-content" id="mainContent">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-chip">
+          <span class="hero-pulse"></span>
+          <span>ENTERPRISE OSINT &amp; RECON ENGINE</span>
+        </div>
+        <h1 class="hero-title">PEOPLE INFORMATION <span class="glow">LOOKUP</span></h1>
+        <p class="hero-sub">FAST &nbsp;|&nbsp; ACCURATE &nbsp;|&nbsp; EASY TO USE</p>
+
+        <!-- Current View Filter Tabs for Mobile / Quick Access -->
+        <div class="view-filter-bar">
+          <button class="filter-pill active" data-filter="all">⚡ All Tools</button>
+          <button class="filter-pill pill-number" data-filter="number">📞 Number</button>
+          <button class="filter-pill pill-aadhar" data-filter="aadhar">🪪 Aadhaar</button>
+          <button class="filter-pill pill-email" data-filter="email">✉️ Email</button>
+          <button class="filter-pill pill-upcoming" data-filter="upcoming">🚀 Upcoming Tools (24)</button>
+        </div>
+      </section>
+
+      <!-- LOOKUP CARDS SECTION -->
+      <section class="cards-section" id="cardsSection">
+        <div class="cards-grid" id="cardsGrid">
+
+          <!-- NUMBER LOOKUP CARD -->
+          <div class="card card--number" id="cardNumber" data-tool="number">
+            <div class="card-accent-line"></div>
+            <div class="card-icon-wrap green">
+              <span class="card-icon">📞</span>
+            </div>
+            <h2 class="card-title">NUMBER <span class="accent-green">LOOKUP</span></h2>
+            <p class="card-desc">Get information about any mobile number</p>
+            
+            <div class="input-group">
+              <span class="input-prefix">🇮🇳 +91</span>
+              <input type="tel" id="numberInput" maxlength="10" placeholder="Enter mobile number" autocomplete="off" inputmode="numeric" />
+            </div>
+
+            <button class="btn btn--green" id="numberBtn">
+              <span class="btn-icon">🔍</span> SEARCH NUMBER
+            </button>
+
+            <ul class="card-features">
+              <li>📞 Operator Details</li>
+              <li>📍 Location Info</li>
+              <li>🗺️ State / Circle</li>
+              <li>📲 Number Type (Jio / Airtel etc.)</li>
+            </ul>
+          </div>
+
+          <!-- AADHAAR LOOKUP CARD -->
+          <div class="card card--aadhar card--featured" id="cardAadhar" data-tool="aadhar">
+            <div class="card-accent-line"></div>
+            <div class="card-icon-wrap red">
+              <span class="card-icon">🪪</span>
+            </div>
+            <h2 class="card-title">AADHAAR <span class="accent-red">LOOKUP</span></h2>
+            <p class="card-desc">Get complete information from Aadhaar number</p>
+            
+            <div class="input-group">
+              <span class="input-prefix">🪪</span>
+              <input type="tel" id="aadharInput" maxlength="12" placeholder="Enter 12 digit Aadhaar number" autocomplete="off" inputmode="numeric" />
+            </div>
+
+            <button class="btn btn--red" id="aadharBtn">
+              <span class="btn-icon">🔍</span> SEARCH AADHAAR
+            </button>
+
+            <ul class="card-features">
+              <li>👤 Name (Masked)</li>
+              <li>⚧️ Gender</li>
+              <li>🗺️ State / District</li>
+              <li>🎂 Age Range</li>
+              <li>✅ Aadhaar Status</li>
+            </ul>
+          </div>
+
+          <!-- EMAIL LOOKUP CARD -->
+          <div class="card card--email" id="cardEmail" data-tool="email">
+            <div class="card-accent-line"></div>
+            <div class="card-icon-wrap blue">
+              <span class="card-icon">✉️</span>
+            </div>
+            <h2 class="card-title">EMAIL <span class="accent-blue">LOOKUP</span></h2>
+            <p class="card-desc">Get complete information about any email</p>
+            
+            <div class="input-group">
+              <span class="input-prefix">@</span>
+              <input type="email" id="emailInput" placeholder="Enter email address" autocomplete="off" inputmode="email" />
+            </div>
+
+            <button class="btn btn--blue" id="emailBtn">
+              <span class="btn-icon">🔍</span> SEARCH EMAIL
+            </button>
+
+            <ul class="card-features">
+              <li>📧 Email Provider</li>
+              <li>✅ Account Status</li>
+              <li>📍 Location (Approx)</li>
+              <li>👤 Social Profiles</li>
+              <li>⚠️ Data Breach Check</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RESULTS PANEL -->
+      <section class="results-section" id="resultsSection" style="display:none;">
+        <div class="results-inner">
+          <div class="results-header">
+            <span id="resultsBadge" class="results-badge"></span>
+            <button class="close-btn" id="closeResults" aria-label="Close Results">✕ Close</button>
+          </div>
+          <div id="resultsBody"></div>
+        </div>
+      </section>
+
+      <!-- UPCOMING TOOLS SHOWCASE SECTION (24 CYBERSECURITY & OSINT TOOLS) -->
+      <section class="upcoming-section" id="upcomingSection">
+        <div class="upcoming-header-wrap">
+          <div class="upcoming-pill">
+            <span class="upcoming-dot"></span>
+            <span>NEXT-GEN CYBER LABS &amp; RECON ROADMAP</span>
+          </div>
+          <h2 class="upcoming-main-title">UPCOMING <span class="accent-purple">CYBER TOOLS</span></h2>
+          <p class="upcoming-sub-title">Advanced penetration testing, offensive security &amp; OSINT tools currently under active engineering</p>
+        </div>
+
+        <div class="upcoming-grid">
+          <!-- 1. Penetration Testing -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🎯</span>
+              <span class="uc-badge">EXPLOITS</span>
+            </div>
+            <h3 class="uc-title">Penetration Testing</h3>
+            <p class="uc-desc">Red Teaming • Exploits</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 2. Vulnerability Assessment -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🛡️</span>
+              <span class="uc-badge">CVE SCANS</span>
+            </div>
+            <h3 class="uc-title">Vulnerability Assessment</h3>
+            <p class="uc-desc">CVE Scans • Audits</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 3. Network Security -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🌐</span>
+              <span class="uc-badge">NETWORK</span>
+            </div>
+            <h3 class="uc-title">Network Security</h3>
+            <p class="uc-desc">Firewalls • IDS/IPS</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 4. Cryptography -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🔐</span>
+              <span class="uc-badge">CIPHERS</span>
+            </div>
+            <h3 class="uc-title">Cryptography</h3>
+            <p class="uc-desc">Ciphers • Hash Algorithms</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 5. Burp Suite -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🕷️</span>
+              <span class="uc-badge">WEB AUDIT</span>
+            </div>
+            <h3 class="uc-title">Burp Suite</h3>
+            <p class="uc-desc">Proxy • Web Audits</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 6. OTP Bypass -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🔑</span>
+              <span class="uc-badge">LOGIC FLAWS</span>
+            </div>
+            <h3 class="uc-title">OTP Bypass</h3>
+            <p class="uc-desc">Logic Flaws • Rate Limits</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 7. Ethical Hacking -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">💻</span>
+              <span class="uc-badge">WHITE HAT</span>
+            </div>
+            <h3 class="uc-title">Ethical Hacking</h3>
+            <p class="uc-desc">White Hat • Security Labs</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 8. Malware Analysis -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">☣️</span>
+              <span class="uc-badge">SANDBOX</span>
+            </div>
+            <h3 class="uc-title">Malware Analysis</h3>
+            <p class="uc-desc">Reverse Eng • Sandboxing</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 9. Incident Response -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🚨</span>
+              <span class="uc-badge">SOC / THREAT</span>
+            </div>
+            <h3 class="uc-title">Incident Response</h3>
+            <p class="uc-desc">SOC • Threat Hunting</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 10. Encryption -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🔏</span>
+              <span class="uc-badge">AES-256</span>
+            </div>
+            <h3 class="uc-title">Encryption</h3>
+            <p class="uc-desc">AES-256 • RSA Keys</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 11. SQL Injection -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">💉</span>
+              <span class="uc-badge">DATABASE</span>
+            </div>
+            <h3 class="uc-title">SQL Injection</h3>
+            <p class="uc-desc">Union • Blind • Error-Based</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 12. XSS Protection -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">⚔️</span>
+              <span class="uc-badge">APP DEFENSE</span>
+            </div>
+            <h3 class="uc-title">XSS Protection</h3>
+            <p class="uc-desc">Reflected • Stored • DOM</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 13. Social Engineering -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🎣</span>
+              <span class="uc-badge">HUMAN VECTOR</span>
+            </div>
+            <h3 class="uc-title">Social Engineering</h3>
+            <p class="uc-desc">Phishing Sim • Human Vector</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 14. Biometric Security -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">👁️</span>
+              <span class="uc-badge">BIOMETRICS</span>
+            </div>
+            <h3 class="uc-title">Biometric Security</h3>
+            <p class="uc-desc">Fingerprint • Face ID</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 15. Cloud Security -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">☁️</span>
+              <span class="uc-badge">CLOUD AUDIT</span>
+            </div>
+            <h3 class="uc-title">Cloud Security</h3>
+            <p class="uc-desc">AWS • Azure • GCP Audits</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 16. WiFi Hacking -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📶</span>
+              <span class="uc-badge">WIRELESS</span>
+            </div>
+            <h3 class="uc-title">WiFi Hacking</h3>
+            <p class="uc-desc">WPA2/3 Handshakes • Aircrack</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 17. Mobile Security -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📱</span>
+              <span class="uc-badge">APP REVERSING</span>
+            </div>
+            <h3 class="uc-title">Mobile Security</h3>
+            <p class="uc-desc">Android &amp; iOS Reversing</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 18. Secure Coding -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📜</span>
+              <span class="uc-badge">OWASP TOP 10</span>
+            </div>
+            <h3 class="uc-title">Secure Coding</h3>
+            <p class="uc-desc">OWASP Top 10 • SAST/DAST</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 19. Number to Details -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📞</span>
+              <span class="uc-badge">TELECOM OSINT</span>
+            </div>
+            <h3 class="uc-title">Number to Details</h3>
+            <p class="uc-desc">Telecom OSINT • Lookup</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 20. IP Lookup -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🗺️</span>
+              <span class="uc-badge">GEO IP</span>
+            </div>
+            <h3 class="uc-title">IP Lookup</h3>
+            <p class="uc-desc">Geolocation • ASN • ISP</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 21. Camera Hacking -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📹</span>
+              <span class="uc-badge">SHODAN RECON</span>
+            </div>
+            <h3 class="uc-title">Camera Hacking</h3>
+            <p class="uc-desc">RTSP Streams • Shodan Recon</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 22. Live Location -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">📍</span>
+              <span class="uc-badge">GPS INTEL</span>
+            </div>
+            <h3 class="uc-title">Live Location</h3>
+            <p class="uc-desc">GPS Intel • Tracing Labs</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 23. Aadhar No. to Details -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🪪</span>
+              <span class="uc-badge">UID OSINT</span>
+            </div>
+            <h3 class="uc-title">Aadhar No. to Details</h3>
+            <p class="uc-desc">Identity OSINT • Verification</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+
+          <!-- 24. Vehicle Details -->
+          <div class="upcoming-card">
+            <div class="uc-top">
+              <span class="uc-icon">🚗</span>
+              <span class="uc-badge">RTO OSINT</span>
+            </div>
+            <h3 class="uc-title">Vehicle Details</h3>
+            <p class="uc-desc">RC Lookup • RTO OSINT</p>
+            <div class="uc-footer">
+              <span class="uc-status"><span class="uc-dot"></span> IN DEVELOPMENT</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES BAR -->
+      <section class="features-bar">
+        <div class="feat-item">
+          <span class="feat-icon">🛡️</span>
+          <div><strong>100% SECURE</strong><p>Your data is safe with us</p></div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">⚡</span>
+          <div><strong>FAST RESULTS</strong><p>Get instant information</p></div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🎯</span>
+          <div><strong>ACCURATE DATA</strong><p>From reliable sources</p></div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">⚙️</span>
+          <div><strong>EASY TO USE</strong><p>Simple &amp; clean interface</p></div>
+        </div>
+      </section>
+
+      <!-- STATS BAR -->
+      <section class="stats-bar">
+        <div class="stat-item"><span class="stat-icon">👥</span><strong>10K+</strong><p>ACTIVE USERS</p></div>
+        <div class="stat-item"><span class="stat-icon">🔍</span><strong>1M+</strong><p>LOOKUP REQUESTS</p></div>
+        <div class="stat-item"><span class="stat-icon">⭐</span><strong>99%</strong><p>USER SATISFACTION</p></div>
+      </section>
+
+      <footer class="footer">
+        <!-- Team Darkie Brand -->
+        <div class="footer-team">
+          <span class="footer-team-emoji">☺️</span>
+          <span class="footer-team-text">𝗧𝗲𝗮𝗺 <span class="footer-team-name">DARKIE</span></span>
+          <span class="footer-devil">😈😈😈</span>
+        </div>
+
+        <!-- Legal Notice -->
+        <div class="footer-legal">
+          <div class="footer-legal-title">
+            <span>🚨</span>
+            <span class="footer-legal-heading">LEGAL NOTICE</span>
+            <span>⚠️</span>
+          </div>
+          <p class="footer-legal-text">
+            We do not support or engage in illegal hacking. All cybersecurity services are provided only with proper
+            <strong style="color:var(--green);">Authorization</strong> and written consent for
+            <strong style="color:var(--blue);">educational purposes only</strong>
+            ✅ 🚫 🔑 🔐
+          </p>
+        </div>
+
+        <!-- Copyright -->
+        <p class="footer-copy">
+          © 2026 <span class="glow">Darkie Zone</span> — CREATED BY
+          <strong style="color:var(--green);letter-spacing:1px;">(KRISHNA DAS)</strong>
+          | For educational &amp; research purposes only.
+        </p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION DOCK -->
+  <nav class="mobile-bottom-dock" id="mobileBottomDock" aria-label="Mobile Navigation">
+    <button class="mobile-dock-btn active" data-tool="all" id="dockBtnAll">
+      <span class="dock-icon">⚡</span>
+      <span class="dock-label">All</span>
+    </button>
+    <button class="mobile-dock-btn dock-btn--green" data-tool="number" id="dockBtnNumber">
+      <span class="dock-icon">📞</span>
+      <span class="dock-label">Number</span>
+    </button>
+    <button class="mobile-dock-btn dock-btn--red" data-tool="aadhar" id="dockBtnAadhar">
+      <span class="dock-icon">🪪</span>
+      <span class="dock-label">Aadhaar</span>
+    </button>
+    <button class="mobile-dock-btn dock-btn--blue" data-tool="email" id="dockBtnEmail">
+      <span class="dock-icon">✉️</span>
+      <span class="dock-label">Email</span>
+    </button>
+    <button class="mobile-dock-btn dock-btn--purple" data-tool="upcoming" id="dockBtnUpcoming">
+      <span class="dock-icon">🚀</span>
+      <span class="dock-label">Upcoming</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     FLOATING ADMIN CONTACT BUTTON (Right Side)
+═══════════════════════════════════════════ -->
+<div class="admin-float-btn" id="adminFloatBtn" title="Contact Admin">
+  <span class="admin-float-icon">🛡️</span>
+  <span class="admin-float-label">ADMIN</span>
+</div>
+
+<!-- Admin Contact Slide Panel -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-panel-inner">
+    <!-- Header -->
+    <div class="admin-panel-header">
+      <div class="admin-panel-title-group">
+        <span class="admin-panel-dot"></span>
+        <span class="admin-panel-title">🛡️ ADMIN CONTACT</span>
+      </div>
+      <button class="admin-panel-close" id="adminPanelClose" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Creator -->
+    <div class="admin-creator-row">
+      <div class="admin-creator-icon">👑</div>
+      <div>
+        <div class="admin-creator-name">KRISHNA KANTA DAS</div>
+        <div class="admin-creator-role">Tool Creator &amp; Admin</div>
+      </div>
+    </div>
+
+    <!-- Credits note -->
+    <div class="admin-credits-box">
+      <span class="admin-credits-icon">💎</span>
+      <div>
+        <div class="admin-credits-title">NEED MORE CREDITS OR ACCESS?</div>
+        <div class="admin-credits-desc">More credits ke liye Admin ko direct DM karein</div>
+      </div>
+    </div>
+
+    <!-- Contact Links -->
+    <div class="admin-links">
+      <a href="https://t.me/Blackhat09090" target="_blank" rel="noopener noreferrer" class="admin-link admin-link--tg">
+        <span class="admin-link-icon">✈️</span>
+        <div class="admin-link-info">
+          <span class="admin-link-label">Telegram</span>
+          <span class="admin-link-val">@Blackhat09090</span>
+        </div>
+        <span class="admin-link-arrow">→</span>
+      </a>
+      <a href="https://wa.me/917377504157?text=Hello%20Admin,%20I%20need%20credits%20for%20OSINT%20tool" target="_blank" rel="noopener noreferrer" class="admin-link admin-link--wa">
+        <span class="admin-link-icon">📱</span>
+        <div class="admin-link-info">
+          <span class="admin-link-label">WhatsApp / Call</span>
+          <span class="admin-link-val">+91 7377504157</span>
+        </div>
+        <span class="admin-link-arrow">→</span>
+      </a>
+      <a href="https://free-ethical-hacking-services.kesug.com/" target="_blank" rel="noopener noreferrer" class="admin-link admin-link--web">
+        <span class="admin-link-icon">🌐</span>
+        <div class="admin-link-info">
+          <span class="admin-link-label">Website</span>
+          <span class="admin-link-val">free-ethical-hacking-services.kesug.com</span>
+        </div>
+        <span class="admin-link-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- Bottom note -->
+    <div class="admin-panel-note">
+      🔐 Authorized access only &nbsp;·&nbsp; Educational purposes only
+    </div>
+  </div>
+</div>
+<!-- Backdrop -->
+<div class="admin-backdrop" id="adminBackdrop"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
