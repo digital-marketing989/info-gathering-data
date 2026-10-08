@@ -230,6 +230,11 @@ function sanitizeClientData(data) {
   return data;
 }
 
+// Detect API base URL: if hosted on GitHub Pages or static host, route requests to Vercel backend
+const API_BASE = (window.location.hostname.includes('github.io'))
+  ? 'https://darkie-zone.vercel.app'
+  : '';
+
 // ── 7. SHARED FETCH & LOOKUP ENGINE ───────────────────────────
 async function doLookup(endpoint, payload, badgeText, badgeClass) {
   // Show results panel with sleek spinner
@@ -243,8 +248,10 @@ async function doLookup(endpoint, payload, badgeText, badgeClass) {
     </div>`;
   resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+  const targetUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+
   try {
-    const res = await fetch(endpoint, {
+    const res = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
